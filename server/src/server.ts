@@ -1,14 +1,19 @@
 import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
-import router from "./controllers/user.routes";
+import { router as productRouter } from "./controllers/product.routes";
+import { router as categoryRouter } from "./controllers/category.routes";
+import swaggerUi from "swagger-ui-express";
+import { swaggerSpec } from "./swagger";
 
 const app = express();
 const PORT = 3000;
 
 app.use(bodyParser.json());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-app.use("/user", router);
+app.use("/product", productRouter);
+app.use("/category", categoryRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running: http://localhost:${PORT}/api-docs`);
 });
